@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看不見的空氣：是場交易</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f0f2f5; }
+        .aqi-border { border-top: 8px solid #f97316; } /* 橘色 Orange */
+        .text-highlight { color: #c2410c; }
+        .bg-highlight { background-color: #fff7ed; }
+        .tab-btn.active { border-bottom: 3px solid #c2410c; color: #111827; font-weight: 700; }
+        .tab-btn { color: #6b7280; border-bottom: 3px solid transparent; }
+        .hidden { display: none; }
+        /* 確保 b 標籤或 strong 標籤正確繼承粗體樣式 */
+        b, strong { font-weight: 700; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-lg bg-white rounded-xl shadow-xl overflow-hidden aqi-border">
+        <div class="bg-gray-900 p-6 text-white">
+            <h1 class="text-2xl font-bold tracking-widest border-l-4 border-orange-500 pl-3">看不見的空氣</h1>
+            <p class="text-sm text-gray-400 mt-1 font-light">吳興市場空氣顯影計畫</p>
+        </div>
+
+        
+        <div class="aspect-video flex items-center justify-center text-gray-500 bg-white border-b border-gray-200">
+            <span class="font-medium tracking-widest text-gray-700 text-2xl font-bold">是場交易</span>
+        </div>
+
+        <div class="p-6">
+            <p class="text-xs text-gray-500 italic mb-4 text-center">
+                塑膠袋、紫手套、早市的現金在空中短暫交會。<br>
+                攤商的手每天重複同樣的動作上千次，<br>
+                空氣裡的東西，也就跟著悄悄累積在她的肺裡。
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 mb-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
+                <div><span class="block text-xs text-gray-400">時間</span>2025.07.20 (日) 10:00</div>
+                <div><span class="block text-xs text-gray-400">天氣</span>晴朗 / 32°C</div>
+                <div><span class="block text-xs text-gray-400">濕度</span>80%</div>
+                <div><span class="block text-xs text-gray-400">風向/風速</span>南風 2.0 m/s</div>
+            </div>
+
+            
+            <div class="flex border-b border-gray-200 mb-4">
+                <button onclick="switchTab('data')" id="btn-data" class="tab-btn active flex-1 py-3 text-center transition-colors">數據快照</button>
+                <button onclick="switchTab('analysis')" id="btn-analysis" class="tab-btn flex-1 py-3 text-center transition-colors">深度解讀</button>
+            </div>
+
+            
+            <div id="content-data" class="space-y-4">
+                <div class="bg-highlight border border-orange-200 rounded-xl p-5">
+                    <div class="flex justify-between items-baseline mb-4 border-b border-orange-200 pb-2">
+                        <span class="text-sm font-bold text-gray-500">AQI 空氣品質</span>
+                        <span class="text-3xl font-bold text-highlight">148 <span class="text-base text-gray-600 font-medium">橘色警示</span></span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-500">PM2.5</p>
+                            <p class="text-lg font-bold text-highlight">60.0 <span class="text-xs font-normal">µg/m³</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">O3 臭氧</p>
+                            <p class="text-lg font-bold text-gray-800">50 <span class="text-xs font-normal">ppb</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">CO 一氧化碳</p>
+                            <p class="text-lg font-bold text-highlight">1.8 <span class="text-xs font-normal">ppm</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">NO2 二氧化氮</p>
+                            <p class="text-lg font-bold text-gray-800">55 <span class="text-xs font-normal">ppb</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-analysis" class="hidden space-y-4">
+                <div class="bg-gray-50 rounded-xl p-1 border border-gray-200 flex text-sm mb-4">
+                    <button onclick="switchSubTab('health')" id="sub-btn-health" class="flex-1 py-2 rounded-lg bg-white shadow text-gray-800 font-medium transition-all">健康意義</button>
+                    <button onclick="switchSubTab('risk')" id="sub-btn-risk" class="flex-1 py-2 rounded-lg text-gray-500 hover:text-gray-700 transition-all">高危族群</button>
+                    <button onclick="switchSubTab('advice')" id="sub-btn-advice" class="flex-1 py-2 rounded-lg text-gray-500 hover:text-gray-700 transition-all">建議</button>
+                </div>
+
+                <div id="sub-content-health" class="text-gray-700 text-sm leading-relaxed p-2">
+                    PM2.5 濃度達 60.0 µg/m³，AQI 達橘色警示。照片裡<b>攤商戴著手套收錢</b>，隔絕了細菌，卻隔絕不了空氣中的污染物。長時間暴露在 PM2.5 中會導致肺部慢性發炎；攤商每天重複同樣的動作，意味著持續的微粒暴露。
+                </div>
+                <div id="sub-content-risk" class="hidden text-gray-700 text-sm leading-relaxed p-2">
+                    主要高危險群：
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li><b>職業性長期暴露者：</b> 市場內水產、熟食攤販（長時間處於高濕度與油煙廢氣混合環境）。</li>
+                        <li><b>心血管病史者：</b> 一氧化碳（CO）濃度對心臟功能較弱者構成額外壓力。</li>
+                        <li><b>採買勞動者：</b> 需要提重物或搬貨的市民，增加換氣量，提高吸入風險。</li>
+                    </ul>
+                </div>
+                <div id="sub-content-advice" class="hidden space-y-4 text-gray-700 text-sm leading-relaxed p-2">
+                    <h4 class="font-bold text-gray-900 mb-1">分級防護建議（橘色警示）：</h4>
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li><b>短暫暴露 (15-30分鐘，如快速採買)：</b> 佩戴一般醫用口罩即可，並專注於快速完成採買。</li>
+                        <li><b>強化防護 (30-60分鐘，如長時間工作)：</b> 必須佩戴標示有 PM2.5 過濾效果的口罩，並避免在 8–10 點人潮雙重高峰時進行劇烈叫賣或搬運工作。</li>
+                        <li><b>環境改善：</b> 攤商應多補充水分，使用風扇加速空氣流動；市場可考慮在通道設置簡易空氣導流，促進廢氣排出。</li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-2 italic">
+                        這些很小的選擇，久了就是身體裡一點一點被省下來的「乾淨空間」。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.getElementById('content-data').classList.add('hidden');
+            document.getElementById('content-analysis').classList.add('hidden');
+            document.getElementById('btn-data').classList.remove('active');
+            document.getElementById('btn-analysis').classList.remove('active');
+
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('btn-' + tab).classList.add('active');
+        }
+
+        function switchSubTab(subTab) {
+            ['health', 'risk', 'advice'].forEach(t => {
+                document.getElementById('sub-content-' + t).classList.add('hidden');
+                document.getElementById('sub-btn-' + t).classList.remove('bg-white', 'shadow', 'text-gray-800', 'font-medium');
+                document.getElementById('sub-btn-' + t).classList.add('text-gray-500');
+            });
+            document.getElementById('sub-content-' + subTab).classList.remove('hidden');
+            const btn = document.getElementById('sub-btn-' + subTab);
+            btn.classList.add('bg-white', 'shadow', 'text-gray-800', 'font-medium');
+            btn.classList.remove('text-gray-500');
+        }
+
+        window.onload = () => {
+            switchTab('data');
+            switchSubTab('health');
+        }
+    </script>
+</body>
+</html>
