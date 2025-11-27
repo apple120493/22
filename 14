@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看不見的空氣：一觸即發</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f0f2f5; }
+        .aqi-border { border-top: 8px solid #dc2626; }
+        .text-highlight { color: #991b1b; }
+        .bg-highlight { background-color: #fef2f2; }
+        .tab-btn.active { border-bottom: 3px solid #dc2626; color: #111827; font-weight: 700; }
+        .tab-btn { color: #6b7280; border-bottom: 3px solid transparent; }
+        .hidden { display: none; }
+        b, strong { font-weight: 700; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-lg bg-white rounded-xl shadow-xl overflow-hidden aqi-border">
+        <div class="bg-gray-900 p-6 text-white">
+            <h1 class="text-2xl font-bold tracking-widest border-l-4 border-red-600 pl-3">看不見的空氣</h1>
+            <p class="text-sm text-gray-400 mt-1 font-light">基隆路口空氣顯影計畫</p>
+        </div>
+
+        
+        <div class="aspect-video flex items-center justify-center text-gray-500 bg-white border-b border-gray-200">
+            <span class="font-medium tracking-widest text-gray-700 text-2xl font-bold">一觸即發</span>
+        </div>
+
+        <div class="p-6">
+            <p class="text-xs text-gray-500 italic mb-4 text-center">
+                前面是被煞車燈照亮的一片臉，<br>
+                側邊是一台飛快撕開畫面的車。<br>
+                靜止的人在等綠燈，<br>
+                動的煙霧已經先穿過他們。
+            </p>
+
+            
+            <div class="grid grid-cols-2 gap-3 mb-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
+                <div><span class="block text-xs text-gray-400">時間</span>2024.07.25 18:15 (傍晚尖峰)</div>
+                <div><span class="block text-xs text-gray-400">天氣</span>多雲 / 32°C</div>
+                <div><span class="block text-xs text-gray-400">濕度/風速</span>85% / 靜風 (易累積)</div>
+                <div><span class="block text-xs text-gray-400">主導污染</span>PM2.5 / NO2 / CO</div>
+            </div>
+
+            
+            <div class="flex border-b border-gray-200 mb-4">
+                <button onclick="switchTab('data')" id="btn-data" class="tab-btn active flex-1 py-3 text-center transition-colors">數據快照</button>
+                <button onclick="switchTab('analysis')" id="btn-analysis" class="tab-btn flex-1 py-3 text-center transition-colors">深度解讀</button>
+            </div>
+
+            
+            <div id="content-data" class="space-y-4">
+                <div class="bg-highlight border border-red-200 rounded-xl p-5">
+                    <div class="flex justify-between items-baseline mb-4 border-b border-red-200 pb-2">
+                        <span class="text-sm font-bold text-gray-500">AQI 空氣品質</span>
+                        <span class="text-3xl font-bold text-highlight">175 <span class="text-base text-gray-600 font-medium">紅色警示</span></span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-500">PM2.5</p>
+                            <p class="text-lg font-bold text-highlight">88.0 <span class="text-xs font-normal">ug/m³</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">NO2 二氧化氮</p>
+                            <p class="text-lg font-bold text-highlight">105 <span class="text-xs font-normal">ppb</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">CO 一氧化碳</p>
+                            <p class="text-lg font-bold text-highlight">3.2 <span class="text-xs font-normal">ppm</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">O3 臭氧</p>
+                            <p class="text-lg font-bold text-gray-800">50 <span class="text-xs font-normal">ppb</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-analysis" class="hidden space-y-4">
+                <div class="bg-gray-50 rounded-xl p-1 border border-gray-200 flex text-sm mb-4">
+                    <button onclick="switchSubTab('health')" id="sub-btn-health" class="flex-1 py-2 rounded-lg bg-white shadow text-gray-800 font-medium transition-all">健康意義</button>
+                    <button onclick="switchSubTab('risk')" id="sub-btn-risk" class="flex-1 py-2 rounded-lg text-gray-500 hover:text-gray-700 transition-all">高危族群</button>
+                    <button onclick="switchSubTab('advice')" id="sub-btn-advice" class="flex-1 py-2 rounded-lg text-gray-500 hover:text-gray-700 transition-all">建議</button>
+                </div>
+
+                <div id="sub-content-health" class="text-gray-700 text-sm leading-relaxed p-2">
+                    <h4 class="font-bold text-gray-900 mb-1">對心肺系統的影響：</h4>
+                    AQI 175 屬於紅色警示，空氣品質已達「不健康」等級。主要污染物為極高的 <b>PM2.5 (88.0 ug/m³)</b>、<b>NO2 (105 ppb)</b> 及 <b>CO (3.2 ppm)</b>。
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><b>高濃度廢氣：</b> 機車怠速和車輛快速掠過，會造成微粒和氣體污染物在等候區短時間內迅速累積。</li>
+                        <li><b>心肺負擔：</b> 處於靜止等候狀態的人，長時間吸入高濃度 CO 會影響血液供氧，PM2.5 則增加心血管系統壓力，容易引起頭暈或胸悶。</li>
+                    </ul>
+                </div>
+                <div id="sub-content-risk" class="hidden text-gray-700 text-sm leading-relaxed p-2">
+                    主要高危險群：
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li><b>機車通勤者：</b> 長時間在車陣中，直接吸入排氣管排放的高濃度廢氣。</li>
+                        <li><b>心血管病患：</b> 高濃度 CO 會降低血氧，對心臟功能較弱者構成嚴重威脅。</li>
+                        <li><b>慢性呼吸道疾病者：</b> NO2 和 PM2.5 刺激可能引發氣喘急性發作。</li>
+                    </ul>
+                </div>
+                <div id="sub-content-advice" class="hidden space-y-4 text-gray-700 text-sm leading-relaxed p-2">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><b>一般行人/短期路過：</b>
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li><b>距離優先：</b> 等紅燈時，盡量退到人行道最外側，與車流保持距離 (建議 2 公尺以上)。</li>
+                                <li><b>基本防護：</b> 佩戴一般醫用口罩，並避免在路口處劇烈運動或深呼吸。</li>
+                            </ul>
+                        </li>
+                        <li><b>長期工作者/機車通勤族 (高風險群)：</b>
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li><b>進階防護：</b> 應選用具有高過濾效果的口罩（如 PM2.5 專用或防護等級較高的口罩），並確保緊密貼合。</li>
+                                <li><b>時間調整：</b> 盡量避開交通尖峰時段，或改走車流量較少的替代路線。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="text-xs text-gray-600 mt-2 italic">
+                        改變暴露時間和距離是保護自己的有效方式。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.getElementById('content-data').classList.add('hidden');
+            document.getElementById('content-analysis').classList.add('hidden');
+            document.getElementById('btn-data').classList.remove('active');
+            document.getElementById('btn-analysis').classList.remove('active');
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('btn-' + tab).classList.add('active');
+        }
+        function switchSubTab(subTab) {
+            ['health', 'risk', 'advice'].forEach(t => {
+                document.getElementById('sub-content-' + t).classList.add('hidden');
+                document.getElementById('sub-btn-' + t).classList.remove('bg-white', 'shadow', 'text-gray-800', 'font-medium');
+                document.getElementById('sub-btn-' + t).classList.add('text-gray-500', 'hover:text-gray-700');
+            });
+            document.getElementById('sub-content-' + subTab).classList.remove('hidden');
+            const btn = document.getElementById('sub-btn-' + subTab);
+            btn.classList.add('bg-white', 'shadow', 'text-gray-800', 'font-medium');
+            btn.classList.remove('text-gray-500', 'hover:text-gray-700');
+        }
+        window.onload = () => {
+            switchTab('data');
+            switchSubTab('health');
+        }
+    </script>
+</body>
+</html>
